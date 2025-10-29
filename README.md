@@ -48,7 +48,19 @@ project/
 │   ├── chunked_coloc_withN267.R
 │   ├── interaction_chunk_quiet.R
 │   └── ...
-├── results/
+├── nontebooks/
+│   ├── run_fastqtl.sh
+│   ├── run_matrixeqtl_day7.R
+│   ├── conditional_mapping_stepwise.R
+│   ├── chunked_coloc_withN267.R
+│   ├── interaction_chunk_quiet.R
+│   └── ...
+│   ├── run_fastqtl.sh
+│   ├── run_matrixeqtl_day7.R
+│   ├── conditional_mapping_stepwise.R
+│   ├── chunked_coloc_withN267.R
+│   ├── interaction_chunk_quiet.R
+│   └── ...
 └── logs/
 ```
 
