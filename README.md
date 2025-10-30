@@ -19,7 +19,7 @@ xxxxxxx
 | **3.2** | `crosscheck.sh`                                   | Perform cross-checking of DNA and RNA samples using Picard’s CrosscheckFingerprints |
 | **4.1** | `MatrixeQTL_cis.R`                                | Run MatrixEQTL using different expression PCs                                       |
 | **4.2** | `trans-day7.PC25_subset.SNPs.R`                   | trans-eQTL mapping using day7 lead cis-eQTLs                                        |
-| **5**   | `run_fastqtl.sh`                                  | Run FastQTL for permutations and nominal passes                                     |
+| **5.1**   | `run_fastqtl.sh`                                  | Run FastQTL for permutations and nominal passes                                     |
 | **6.1** | `lmm.R`                                           | LMM model for cis-eQTL mapping                                                      |
 | **6.2** | `eigenMT-input.r`                                 | Prepare eigenMT input                                                               |
 | **6.3** | `eigenMT_python3.py`                              | Python eigenMT script                                                               |
