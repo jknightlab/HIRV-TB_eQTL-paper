@@ -1,0 +1,133 @@
+
+# LD Score (ldsc) regression analysis  - partitioned heritability estimation
+# Install ldsc either via Conda or from the GitHub repository at https://github.com/bulik/ldsc.
+#----------------------------------------------------------------#
+# step1
+#----------------------------------------------------------------#
+
+#!/bin/bash
+
+if [[ ! -e "data/test" ]]; then
+mkdir ./data/test
+fi
+
+for CHR in {1..22}; do
+
+echo ${CHR}
+
+
+./make_annot.py \
+--bed-file data/TB.eQTL_non.TSTs.bed \
+--bimfile data/1000G_EUR_Phase3_plink/1000G.EUR.QC.${CHR}.bim \
+--annot-file data/test/non.TST.${CHR}.annot.gz
+
+
+./ldsc.py \
+--l2 \
+--bfile data/1000G_EUR_Phase3_plink/1000G.EUR.QC.${CHR} \
+--ld-wind-cm 1 \
+--annot data/test/non.TST.${CHR}.annot.gz \
+--thin-annot \
+--out data/test/non.TST.${CHR} \
+--print-snps data/list.txt
+
+done
+
+
+#
+for CHR in {1..22}; do
+
+echo ${CHR}
+
+
+./make_annot.py \
+--bed-file data/TB.eQTL_TSTs.bed \
+--bimfile data/1000G_EUR_Phase3_plink/1000G.EUR.QC.${CHR}.bim \
+--annot-file data/test/TST.${CHR}.annot.gz
+
+
+./ldsc.py \
+--l2 \
+--bfile data/1000G_EUR_Phase3_plink/1000G.EUR.QC.${CHR} \
+--ld-wind-cm 1 \
+--annot data/test/TST.${CHR}.annot.gz \
+--thin-annot \
+--out data/test/TST.${CHR} \
+--print-snps data/list.txt
+
+done
+
+
+#----------------------------------------------------------------#
+# step2
+#----------------------------------------------------------------#
+
+#!/bin/bash
+
+# Create the output directory if it doesn't exist
+if [[ ! -e "binary.results" ]]; then
+    mkdir ./binary.results
+fi
+
+# Define the common paths
+ref_ld_chr="data/1000G_Phase3_baselineLD_v2.2_ldscores/baselineLD.,data/test/TST.,data/test/non.TST."
+frqfile_chr="data/1000G_Phase3_frq/1000G.EUR.QC."
+w_ld_chr="data/weights_hm3_no_hla/weights."
+
+# Define the list of sumstats files
+sumstats_files=(
+    "PASS_BMI1.sumstats.gz"
+    "PASS_Height1.sumstats.gz"
+    "PASS_Anorexia.sumstats.gz"
+    "PASS_Bipolar_Disorder.sumstats.gz"
+    "PASS_Coronary_Artery_Disease.sumstats.gz"
+    "PASS_Crohns_Disease.sumstats.gz"
+    "PASS_Ever_Smoked.sumstats.gz"
+    "PASS_Fasting_Glucose.sumstats.gz"
+    "PASS_HDL.sumstats.gz"
+    "PASS_LDL.sumstats.gz"
+    "PASS_Rheumatoid_Arthritis.sumstats.gz"
+    "PASS_Schizophrenia.sumstats.gz"
+    "PASS_Triglycerides.sumstats.gz"
+    "PASS_Type_2_Diabetes.sumstats.gz"
+    "PASS_Ulcerative_Colitis.sumstats.gz"
+    "PASS_Years_of_Education1.sumstats.gz"
+    "PASS_IBD.sumstats.gz"
+    "PASS_Autism.sumstats.gz"
+    "PASS_Alzheimer.sumstats.gz"
+    "PASS_Type_1_Diabetes.sumstats.gz"
+    "PASS_Multiple_sclerosis.sumstats.gz"
+    "PASS_Celiac.sumstats.gz"
+    "PASS_Primary_biliary_cirrhosis.sumstats.gz"
+    "PASS_Lupus.sumstats.gz"
+    "PASS_SWB.sumstats.gz"
+    "PASS_DS.sumstats.gz"
+    "PASS_Neuroticism.sumstats.gz"
+    "PASS_Years_of_Education2.sumstats.gz"
+)
+
+# Loop over all sumstats files
+for sumstats_file in "${sumstats_files[@]}"; do
+    # Extract base name without the file extension (e.g., PASS_BMI1)
+    base_name="${sumstats_file%.sumstats.gz}"
+    
+    # Create an output name by appending a suffix
+    output_name="${base_name}_baselineLD.TST.non.TST"
+
+    # Run the ldsc.py command for each sumstats file
+    ./ldsc.py \
+    --h2 "data/sumstats_formatted/$sumstats_file" \
+    --ref-ld-chr $ref_ld_chr \
+    --frqfile-chr $frqfile_chr \
+    --w-ld-chr $w_ld_chr \
+    --overlap-annot \
+    --print-coefficients \
+    --print-delete-vals \
+    --out "binary.results/$output_name"
+done
+
+
+
+
+
+
