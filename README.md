@@ -87,6 +87,7 @@ xxxxxxx
     ├── 9.1.interaction.analysis-Day7vsDay2.r
     └── 9.2.interaction.analysis_cell.module.r
 3 directories, 42 files
+
 ```
 
 
@@ -123,8 +124,9 @@ xxxxxxx
 | **bcftools** | ≥ 1.10 | VCF filtering / annotation |
 | **htslib** (bgzip, tabix) | ≥ 1.8 | Compression / indexing |
 | **Picard Tools** | ≥ 2.21.1 | BAM deduplication, read-group assignment |
-| **eigenMT** | Python 3 | Conditional cis-eQTL fine-mapping |
-| **Anaconda** | ≥ 2023.07 | Environment management |
+| **eigenMT** | Python 3.12.4 | Conditional cis-eQTL fine-mapping |
+| **ldsc** | Python 2.7.15 | Estimating heritability and genetic correlation from GWAS summary statistics |
+| **conda** | v23.7.2 | Package & environment management |
 
 ---
 
